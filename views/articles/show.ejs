@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Blog</title>
+  <style>
+    body.dark-mode {
+        background-color: #222;
+        color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-3"><%= post.title %></h1>
+    <div class="text-muted mb-3">
+      <%= post.user %> <%= post.date %> 
+    </div>
+    <div class="mb-3">
+      <%= post.descritopn %>
+    </div>
+    <div>
+      <%= post.contents %>
+    </div>
+    <a href="/" class="btn btn-secondary mt-3">All Articles</a>
+    <% if (userName === post.user) { %>
+      <a href="/articles/edit/<%= post.id %>" class="btn btn-info mt-3">Edit</a>
+      <form action="/articles/<%= post.id %>" method="POST" style="display: inline;">
+        <input type="hidden" name="_method" value="DELETE"> 
+        <button type="submit" class="btn btn-danger mt-3">Delete</button>
+      </form>
+    <% } %>
+
+    <h2 class="mt-5">Comments</h2>
+    <% comments.forEach(comment => { %>
+      <div class="card mt-3">
+        <div class="card-body">
+          <h5 class="card-title"><%= comment.user %></h5>
+          <p class="card-text"><%= comment.text %></p>
+        </div>
+      </div>
+    <% }) %>
+
+    <% if (userName && userName !== 'Nieznany użytkownik') { %>
+      <form action="/articles/<%= post.id %>/comment" method="POST">
+        <div class="form-group mt-4">
+          <label for="comment">Add a comment:</label>
+          <textarea class="form-control" id="comment" name="text" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    <% } %>
+    
+
+  </div>
+  <script>
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+  </script>
+</body>
+</html>
